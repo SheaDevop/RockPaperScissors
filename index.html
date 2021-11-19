@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <script>
+            let computerPlay = () => {
+                let computerChoice 
+                let randomNumber = () => {
+                return Math.floor((Math.random() * 10) / 4)
+                }
+
+                switch (randomNumber()) {
+                    case 0:
+                        computerChoice = `rock`
+                        break;
+                    case 1:
+                        computerChoice = `paper`
+                        break;
+                    case 2:
+                        computerChoice = `scissors`
+                        break;
+                }
+                return computerChoice
+            }
+
+            let computerSelection
+
+            let playerSelection
+            
+            function playRound(computerSelection, playerSelection) {
+                let whoWins
+
+                playerSelection =  prompt(`Make your choice: Rock, Paper or Scissors ?`).toLowerCase()
+
+                computerSelection = computerPlay()
+
+                if ((playerSelection === 'rock') && (computerSelection === 'scissors') || (playerSelection === 'paper') && (computerSelection === 'rock') || (playerSelection === 'scissors') && (computerSelection === 'paper')) {
+                    whoWins = `player`
+                }else if (playerSelection === computerSelection) {
+                    whoWins = `It's a tie`
+                }else {
+                    whoWins = `computer`
+                }
+                return whoWins;
+            }
+
+            function game () {
+                let keepGoing = true
+                let switcher = 1
+                let computerPoints = 0
+                let playerPoints = 0
+                while (keepGoing) {
+                    let match = playRound(computerSelection, playerSelection)
+                    if (match === `player`) {
+                        playerPoints++
+                    }else if (match === `computer`) {
+                        computerPoints++
+                    }else{
+                        playerPoints++
+                        computerPoints++
+                    }
+                    switcher >= 5 ? keepGoing = false : keepGoing = true ;
+                    switcher++
+                }
+                playerPoints > computerPoints ? console.log(`You win!!`) :
+                    playerPoints === computerPoints ? console.log(`It's a tie`) : console.log(`You lose!!`);
+            }
+            game()
+        </script>
+    </body>
+</html>
