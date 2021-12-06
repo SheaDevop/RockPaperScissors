@@ -2,14 +2,53 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <link rel="stylesheet" href="../rock_paper_scissors/styles.css">
     </head>
     <body>
+        <h1>Rock Paper Scissors, Lets play!!!</h1>
+        <div id="container">
+            <div id="btn-container">
+                <button id="rock"><img src="../rock_paper_scissors/icons/rock.png" alt="a grey rock"></button>
+                <button id="paper"><img src="../rock_paper_scissors/icons/document.png" alt="a sheet of paper"></button>
+                <button id="scissors"><img src="../rock_paper_scissors/icons/scissors.png" alt="just scissors"></button>
+            </div>
+            <h2>Score</h2>
+            <div id="score">
+                <div id="playerScore">Player:</div>
+                <div id="computerScore">Machine:</div>
+            </div>
+        </div>
         <script>
+            let playerSelection;
+            let computerSelection;
+            let playerScore = 0;
+            let computerScore = 0;
+            const scoreNode = document.querySelector('#score')
+            const pSNode = document.querySelector('#playerScore')
+            const cSNode = document.querySelector('#computerScore')
+            const buttons = document.querySelectorAll('button');
+            const container = document.querySelector('#container');
+            const winnerDisplay = document.createElement('div');
+
+            buttons.forEach((button) => {
+                button.addEventListener('click', () => {
+                    playerSelection = button.id;
+                    let winner = playRound(computerSelection, playerSelection);
+                    if (winner === 'player') {
+                        playerScore++
+                    }else if (winner === 'computer') {
+                        computerScore++
+                    };
+                    updateScores(computerScore, playerScore);
+                    displayWinner(playerScore, computerScore);
+                });
+            });
+            
             let computerPlay = () => {
-                let computerChoice 
+                let computerChoice ;
                 let randomNumber = () => {
-                return Math.floor((Math.random() * 10) / 4)
-                }
+                    return Math.floor((Math.random() * 10) / 4)
+                };
 
                 switch (randomNumber()) {
                     case 0:
@@ -21,20 +60,14 @@
                     case 2:
                         computerChoice = `scissors`
                         break;
-                }
-                return computerChoice
-            }
-
-            let computerSelection
-
-            let playerSelection
+                };
+                return computerChoice;
+            };
             
             function playRound(computerSelection, playerSelection) {
-                let whoWins
+                let whoWins;
 
-                playerSelection =  prompt(`Make your choice: Rock, Paper or Scissors ?`).toLowerCase()
-
-                computerSelection = computerPlay()
+                computerSelection = computerPlay();
 
                 if ((playerSelection === 'rock') && (computerSelection === 'scissors') || (playerSelection === 'paper') && (computerSelection === 'rock') || (playerSelection === 'scissors') && (computerSelection === 'paper')) {
                     whoWins = `player`
@@ -42,32 +75,30 @@
                     whoWins = `It's a tie`
                 }else {
                     whoWins = `computer`
-                }
+                };
                 return whoWins;
-            }
+            };
 
-            function game () {
-                let keepGoing = true
-                let switcher = 1
-                let computerPoints = 0
-                let playerPoints = 0
-                while (keepGoing) {
-                    let match = playRound(computerSelection, playerSelection)
-                    if (match === `player`) {
-                        playerPoints++
-                    }else if (match === `computer`) {
-                        computerPoints++
-                    }else{
-                        playerPoints++
-                        computerPoints++
-                    }
-                    switcher >= 5 ? keepGoing = false : keepGoing = true ;
-                    switcher++
-                }
-                playerPoints > computerPoints ? console.log(`You win!!`) :
-                    playerPoints === computerPoints ? console.log(`It's a tie`) : console.log(`You lose!!`);
-            }
-            game()
+            function updateScores (computerScore, playerScore) {
+                pSNode.textContent = `Player: ${playerScore}`;
+                cSNode.textContent = `Computer: ${computerScore}`;
+            };
+
+            function displayWinner (pS, cS) {
+                if (pS === 5) {
+                    winnerDisplay.textContent = `You've won the match, you're a winner yey!!`;
+                    winnerDisplay.setAttribute('style', 'color:white; font-size:50px; text-aling:center;');
+                    scoreNode.removeChild(pSNode);
+                    scoreNode.removeChild(cSNode);
+                    scoreNode.appendChild(winnerDisplay);
+                }else if (cS === 5) {
+                    winnerDisplay.textContent = `You've lost the match, you're a loser, so sad :'(`;
+                    winnerDisplay.setAttribute('style', 'color:white; font-size:50px; text-aling:center;');
+                    scoreNode.removeChild(pSNode);
+                    scoreNode.removeChild(cSNode);
+                    scoreNode.appendChild(winnerDisplay);
+                }else {return};
+            };
         </script>
     </body>
 </html>
